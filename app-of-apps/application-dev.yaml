@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vj8vx6bdl-java-quarkus-development
+  namespace: tssc-gitops
+  finalizers: ["resources-finalizer.argocd.argoproj.io"] 
+spec:
+  project: default
+  source:
+    path: ./components/vj8vx6bdl-java-quarkus/overlays/development
+    repoURL: https://github.com/rhtap-rhdh-qe/vj8vx6bdl-java-quarkus-gitops.git
+    targetRevision: main
+  destination:
+    namespace: tssc-app-development
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    managedNamespaceMetadata:
+      labels: 
+        argocd.argoproj.io/managed-by: tssc-gitops
+    automated: 
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PruneLast=true
